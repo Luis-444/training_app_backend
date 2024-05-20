@@ -65,7 +65,36 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' =>'required|string|max:100',
+            'abbreviation' =>'required|string|max:10',
+        ]);
+
+        try {
+            $department = Department::find($id);
+
+            if (!$request) {
+                return response()->json([
+                    'message' => 'El departamento no existe',
+                    'error' => true,
+                    'department' => null
+                ], 404);
+            }
+
+            $department->update($request->all());
+
+            return response()->json([
+                'message' => "Departamento actualizado correctamente",
+                'error' => false,
+                'department' => $department
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al actualizar el departamento: '. $th->getMessage(),
+                'error' => true,
+                'department' => null
+            ], 500);
+        }
     }
 
     /**
@@ -76,6 +105,29 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $department = Department::find($id);
+            if (!$department) {
+                return response()->json([
+                   'message' => 'El departamento no existe',
+                    'error' => true,
+                    'department' => null
+                ], 404);
+            }
+
+            $department->delete();
+
+            return response()->json([
+               'message' => 'Departamento eliminado correctamente',
+                'error' => false,
+                'department' => $department
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+               'message' => 'Error al eliminar el departamento: '. $th->getMessage(),
+                'error' => true,
+                'department' => null
+            ], 500);
+        }
     }
 }
