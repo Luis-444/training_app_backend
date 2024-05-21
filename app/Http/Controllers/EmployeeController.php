@@ -14,7 +14,11 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::with('department')->get();
+        return response()->json([
+            'error' => false,
+            'employees' => $employees
+        ]);
     }
 
     /**

@@ -15,5 +15,9 @@ class Employee extends Model
         'procedure_id',
     ];
 
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
     use HasFactory;
 }
