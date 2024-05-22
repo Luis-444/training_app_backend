@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('initials');
             $table->integer('employee_number');
             $table->foreignId('department_id')->nullable()->constrained();
-            $table->integer('procedure_id');
+            $table->foreignId('procedure_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

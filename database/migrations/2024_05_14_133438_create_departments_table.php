@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('abbreviation');
+            $table->foreignId('procedure_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

@@ -18,6 +18,9 @@ class Employee extends Model
     public function department(){
         return $this->belongsTo(Department::class);
     }
+    public function procedure(){
+        return $this->belongsTo(Procedure::class);
+    }
 
     use HasFactory;
 }

@@ -14,7 +14,11 @@ class ProcedureController extends Controller
      */
     public function index()
     {
-        //
+        $procedures = Procedure::all();
+        return response()->json([
+            'error' => false,
+            'procedures' => $procedures
+        ]);
     }
 
     /**

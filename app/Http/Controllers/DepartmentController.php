@@ -14,7 +14,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
+        $departments = Department::with('procedure')->get();
         return response()->json([
             'error' => false,
             'departments' => $departments

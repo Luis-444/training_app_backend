@@ -12,5 +12,9 @@ class Department extends Model
         'abbreviation',
     ];
 
+    public function procedure(){
+        return $this->belongsTo(Procedure::class);
+    }
+
     use HasFactory;
 }
