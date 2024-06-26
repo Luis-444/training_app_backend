@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeProcedure;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 
@@ -14,7 +15,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with('department')->get();
+        $employees = Employee::with('department', 'procedures')->get();
         return response()->json([
             'error' => false,
             'employees' => $employees
@@ -38,6 +39,12 @@ class EmployeeController extends Controller
         ]);
         try {
             $employee = Employee::create($request->all());
+            foreach ($request->procedures as $key => $procedure) {
+                EmployeeProcedure::create([
+                    'employee_id' => $employee->id,
+                    'procedure_id' => $procedure["id"]
+                ]);
+            }
             return response()->json([
                 'message' => 'Creado correctamente',
                 'error' => false,
