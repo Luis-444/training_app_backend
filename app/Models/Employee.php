@@ -12,14 +12,17 @@ class Employee extends Model
         'initials',
         'employee_number',
         'department_id',
-        'procedure_id',
     ];
 
     public function department(){
         return $this->belongsTo(Department::class);
     }
-    public function procedure(){
-        return $this->belongsTo(Procedure::class);
+    public function procedures(){
+        return $this->belongsToMany(Procedure::class, 'employee_procedures');
+    }
+
+    public function employee_procedures(){
+        return $this->hasMany(EmployeeProcedure::class);
     }
 
     use HasFactory;
