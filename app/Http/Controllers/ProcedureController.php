@@ -139,4 +139,25 @@ class ProcedureController extends Controller
             ], 500);
         }
     }
+
+    public function addProcedure(Request $request){
+        $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'procedure_id' => 'required|exists:procedures,id',
+        ]);
+        try {
+            $employeeProcedure = EmployeeProcedure::create($request->all());
+            return response()->json([
+                'message' => 'Procedimiento creado correctamente',
+                'error' => false,
+                'employeeProcedure' => $employeeProcedure
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al crear el procedimiento' . $th->getMessage(),
+                'error' => true,
+                'procedure' => null
+            ]);
+        }
+    }
 }
