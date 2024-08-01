@@ -35,16 +35,10 @@ class EmployeeController extends Controller
             'initials' => 'required|string',
             'employee_number' => 'required|integer',
             'department_id' => 'required|integer',
-            'procedure_id' => 'required|integer',
+            'trainner_email' => 'required|email',
         ]);
         try {
             $employee = Employee::create($request->all());
-            foreach ($request->procedures as $key => $procedure) {
-                EmployeeProcedure::create([
-                    'employee_id' => $employee->id,
-                    'procedure_id' => $procedure["id"]
-                ]);
-            }
             return response()->json([
                 'message' => 'Creado correctamente',
                 'error' => false,
@@ -82,9 +76,9 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required|string|max:100',
             'initials' => 'required|string',
+            'trainner_email' => 'required|email',
             'employee_number' => 'required|integer',
             'department_id' => 'required|integer',
-            'procedure_id' => 'required|integer',
         ]);
 
         try {

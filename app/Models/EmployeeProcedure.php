@@ -18,4 +18,8 @@ class EmployeeProcedure extends Model
         return $this->belongsTo(Procedure::class);
     }
 
+    public function employee(){
+        return $this->belongsTo(Employee::class);
+    }
+
 }

@@ -12,15 +12,18 @@ use Illuminate\Queue\SerializesModels;
 class NotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $employee;
+    public $procedure;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($employeeProcedure)
     {
-        //
+        $this->employee = $employeeProcedure->employee;
+        $this->procedure = $employeeProcedure->procedure;
     }
 
     /**

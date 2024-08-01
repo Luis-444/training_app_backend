@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Procedure};
+use App\Models\{Procedure, EmployeeProcedure};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationMail;
+use App\Jobs\SendNotificationMail;
 
 class ProcedureController extends Controller
 {
@@ -140,13 +144,24 @@ class ProcedureController extends Controller
         }
     }
 
-    public function addProcedure(Request $request){
+    public function addProcedure(Request $request)
+    {
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
             'procedure_id' => 'required|exists:procedures,id',
         ]);
+
         try {
+            if (EmployeeProcedure::where('employee_id', $request->employee_id)->where('procedure_id', $request->procedure_id)->exists()) {
+                return response()->json([
+                    'message' => 'El procedimiento ya ha sido asignado al empleado',
+                    'error' => true,
+                    'employeeProcedure' => null
+                ], 400);
+            }
             $employeeProcedure = EmployeeProcedure::create($request->all());
+            SendNotificationMail::dispatch($employeeProcedure)->delay(now()->addMinute());
+
             return response()->json([
                 'message' => 'Procedimiento creado correctamente',
                 'error' => false,
@@ -160,4 +175,5 @@ class ProcedureController extends Controller
             ]);
         }
     }
+
 }
